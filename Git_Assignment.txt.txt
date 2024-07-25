@@ -1,0 +1,98 @@
+Git Assignment
+
+1.	How do you initialize a new Git repository named "project1" on your local machine?
+
+# Navigate to your desired project directory
+cd path/to/your/project1
+
+# Initialize a new Git repository
+git init
+
+2.	How do you add a new file named "index.html" to the "project1" repository?
+
+git add index.html
+
+3.	How do you stage the changes made to "index.html" for committing?
+
+# Stage all changes
+git add .
+
+# OR stage specific changes
+git add path/to/your/modified/file.html
+
+4.	How do you commit the changes made to "index.html" with a commit message of "Add index.html"?
+
+git commit -m "Add index.html"
+
+5.	How do you view the commit history of the "project1" repository?
+
+git log
+
+6.	How do you create a new branch named "feature-branch" in the "project1" repository?
+
+git checkout -b feature-branch
+
+7.	How do you switch to the "feature-branch" in the "project1" repository?
+
+git checkout feature-branch
+
+8.	How do you make changes to "index.html" in the "feature-branch"?
+
+Making Changes in the “feature-branch”  Edit current  “index.html” or any other files in the feature branch.
+
+9.	How do you stage and commit the changes made in the "feature-branch" with a commit message of "Update index.html in feature branch"?
+
+git add .
+git commit -m "Update index.html in feature branch"
+
+10.	How do you switch back to the main branch in the "project1" repository?
+
+git checkout main
+
+11.	How do you merge the changes from the "feature-branch" into the main branch?
+
+git merge feature-branch
+
+12.	How do you resolve any merge conflicts that occur during the merge process?
+
+If conflicts arise during the merge, resolve them manually in  files, and then, go for next steps.
+
+# After resolving conflicts, stage the changes
+git add .
+
+# Commit the merge
+git commit -m "Merge feature-branch into main"
+
+13.	How do you view the changes introduced by the merge commit?
+
+git show <merge-commit-hash>
+
+
+14.	How do you create a new tag named "v1.0" for the current commit in the "project1" repository?
+
+git tag v1.0
+
+15.	How do you push the "project1" repository to a remote repository named "origin"?
+
+git remote add origin <remote-repo-url>
+git push -u origin main
+
+16.	How do you clone the "project1" repository from a remote repository to another machine?
+
+git clone <remote-repo-url>
+
+17.	How do you fetch the latest changes from the remote repository to your local "project1" repository?
+
+git fetch origin
+
+18.	How do you pull the latest changes from the remote repository into your current branch in the "project1" repository?
+
+git pull origin main
+
+19.	How do you create a new branch named "bug-fix" in the "project1" repository based on a specific commit?
+
+git checkout -b bug-fix <commit-hash>
+
+20.	How do you revert the last commit made in the "project1" repository?
+
+git revert HEAD
