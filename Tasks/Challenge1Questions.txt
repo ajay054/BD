@@ -1,0 +1,200 @@
+-- 1. What is the total amount each customer spent at the restaurant?
+-- 2. How many days has each customer visited the restaurant?
+-- 3. What was the first item from the menu purchased by each customer?
+-- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
+-- 5. Which item was the most popular for each customer?
+-- 6. Which item was purchased first by the customer after they became a member?
+-- 7. Which item was purchased just before the customer became a member?
+-- 8. What is the total items and amount spent for each member before they became a member?
+-- 9.  If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
+-- 10. In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January?
+
+
+Answers:
+
+--1. SELECT
+    customer_id,
+    SUM(price) AS total_amount_spent
+FROM
+    sales
+JOIN
+    menu ON sales.product_id = menu.product_id
+GROUP BY
+    customer_id;
+
+Output:
+
+--2. SELECT
+    customer_id,
+    COUNT(DISTINCT order_date) AS days_visited
+FROM
+    sales
+GROUP BY
+    customer_id;
+
+Output: 
+
+--3. WITH RankedSales AS (
+    SELECT
+        customer_id,
+        product_name,
+        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY order_date) AS rn
+    FROM
+        sales
+    JOIN
+        menu ON sales.product_id = menu.product_id
+)
+SELECT
+    customer_id,
+    product_name
+FROM
+    RankedSales
+WHERE
+    rn = 1;
+
+Output:
+
+--4. SELECT
+    product_name,
+    COUNT(*) AS purchase_count
+FROM
+    sales
+JOIN
+    menu ON sales.product_id = menu.product_id
+GROUP BY
+    product_name
+ORDER BY
+    purchase_count DESC
+LIMIT 1;
+
+Output:
+
+--5. WITH RankedItems AS (
+    SELECT
+        customer_id,
+        product_name,
+        COUNT(*) AS item_count,
+        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY COUNT(*) DESC) AS rn
+    FROM
+        sales
+    JOIN
+        menu ON sales.product_id = menu.product_id
+    GROUP BY
+        customer_id,
+        product_name
+)
+SELECT
+    customer_id,
+    product_name
+FROM
+    RankedItems
+WHERE
+    rn = 1;
+
+Output:
+
+--6: WITH MemberPurchases AS (
+    SELECT
+        s.customer_id,
+        m.product_name,
+        ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.order_date) AS rn
+    FROM
+        sales s
+    JOIN
+        menu m ON s.product_id = m.product_id
+    JOIN
+        members mem ON s.customer_id = mem.customer_id
+)
+SELECT
+    customer_id,
+    product_name
+FROM
+    MemberPurchases
+WHERE
+    rn = 1;
+
+Output:
+
+--7: WITH PreMemberPurchases AS (
+    SELECT
+        s.customer_id,
+        m.product_name,
+        ROW_NUMBER() OVER (PARTITION BY s.customer_id ORDER BY s.order_date DESC) AS rn
+    FROM
+        sales s
+    JOIN
+        menu m ON s.product_id = m.product_id
+    JOIN
+        members mem ON s.customer_id = mem.customer_id
+)
+SELECT
+    customer_id,
+    product_name
+FROM
+    PreMemberPurchases
+WHERE
+    rn = 1;
+
+Output:
+
+--8 WITH PreMemberTotals AS (
+    SELECT
+        s.customer_id,
+        COUNT(*) AS total_items,
+        SUM(price) AS total_amount_spent
+    FROM
+        sales s
+    JOIN
+        menu m ON s.product_id = m.product_id
+    LEFT JOIN
+        members mem ON s.customer_id = mem.customer_id
+    WHERE
+        mem.customer_id IS NULL
+    GROUP BY
+        s.customer_id
+)
+SELECT
+    customer_id,
+    total_items,
+    total_amount_spent
+FROM
+    PreMemberTotals;
+
+Output:
+
+--9. WITH PointsEarned AS (
+    SELECT
+        customer_id,
+        SUM(price) AS total_spending,
+        SUM(CASE WHEN product_name = 'sushi' THEN price * 2 ELSE price END) AS total_points
+    FROM
+        sales
+    JOIN
+        menu ON sales.product_id = menu.product_id
+    GROUP BY
+        customer_id
+)
+SELECT
+    customer_id,
+    total_spending,
+    total_points
+FROM
+    PointsEarned;
+
+Output:
+
+--10. WITH FirstWeekPoints AS (
+    SELECT
+        s.customer_id,
+        SUM(CASE WHEN product_name = 'sushi' THEN price * 2 ELSE price END) AS points_earned
+    FROM
+        sales s
+    JOIN
+        menu m ON s.product_id = m.product_id
+    JOIN
+        members mem ON s.customer_id =
+Output:
+
+
+
+
