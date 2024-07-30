@@ -1,0 +1,69 @@
+Scala
+1.	What is a trait ? when to use ?  example
+
+Short Answer :
+A Trait is Defined as unit used to encapsulate the method and its variables.
+
+
+Example: 
+
+Useful for code reusability, mixins, and abstracting behavior.
+
+Long Answer : What is a Trait?
+
+A trait in Scala is similar to an interface in Java, but it’s more powerful. 
+
+key points:
+
+A trait defines a set of methods and fields that can be mixed into classes.
+Unlike Java interfaces, traits can also contain concrete method implementations.
+A class can extend multiple traits, allowing for flexible composition.
+
+When to Use Traits:
+
+Traits are useful in several scenarios
+Code Reusability, Mixins, Multiple Inheritance, Abstracting Common Behavior
+
+Example:
+
+Scenario: Modeling Vehicles with Traits
+Trait: Vehicle
+Defines common behavior for all vehicles.
+Abstract methods:
+startEngine(): Represents starting the vehicle’s engine.
+stopEngine(): Represents stopping the vehicle’s engine.
+accelerate(speed: Double): Represents accelerating the vehicle to a given speed.
+Class: Car
+Implements the Vehicle trait.
+Provides specific behavior related to cars:
+Overrides startEngine() to print a message about starting the car’s engine.
+Overrides stopEngine() to print a message about stopping the car’s engine.
+Overrides accelerate(speed) to indicate acceleration in miles per hour.
+Class: Bicycle
+Also implements the Vehicle trait.
+Provides different behavior suitable for bicycles:
+Overrides startEngine() to acknowledge that bicycles don’t have engines.
+Overrides stopEngine() with a message specific to bicycles.
+Overrides accelerate(speed) to describe pedaling faster.
+In summary, the Vehicle trait defines the core methods, and both the Car and Bicycle classes adapt these methods to their respective contexts.
+
+
+2.	Difference between trait and sealed trait?
+3.	What is an abstract class? 
+4.	What is the difference between  java interface and a scala trait?
+5.	What is a singleton 
+6.	What is a higher order function?
+7.	What is a closure function
+8.	What is a companion object? What are the advantages ? example
+9.	Nil vs Null vs null vs Nothing vs None vs Unit 
+10.	What is pure function?
+11.	What is SBT and how have you used it? 
+12.	What is currying?
+13.	Difference between currying and higher-order functions
+14.	Difference between var and val?
+15.	What is case class?
+16.	Why/when to use case class? Example
+17.	Difference between case class and normal class?
+18.	Scala type hierarchy?
+19.	What are partially applied functions?
+20.	What is tail recursion.
