@@ -49,15 +49,363 @@ In summary, the Vehicle trait defines the core methods, and both the Car and Bic
 
 
 2.	Difference between trait and sealed trait?
+	Short Answer: A trait in Scala is similar to an interface in Java. and A sealed trait is a special kind of trait with additional restrictions.
+use case : 
+	Traits: Use normal traits when you want to share behavior across classes without restricting where those classes can be defined.
+	Sealed Traits: Use sealed traits when you have a finite and known set of subclasses that should be tightly controlled within a single file. This ensures that all possible subtypes are explicitly handled.
+
+Long Answer :
+
+Trait:
+
+A trait in Scala is similar to an interface in Java. Here are the key points:
+
+Traits define a set of methods and fields that can be shared among multiple classes.
+They can contain both abstract (unimplemented) methods and concrete (implemented) methods.
+Classes can extend multiple traits, allowing for flexible composition.
+Traits cannot be instantiated directly; they serve as blueprints for classes.
+
+Sealed Trait:
+A sealed trait is a special kind of trait with additional restrictions:
+All its subclasses (implementations) must be defined in the same file where the sealed trait is declared.
+The compiler knows all possible subtypes of a sealed trait, which enables better type safety.
+Sealed traits are often used as an alternative to enums.
+When pattern matching on a sealed trait, the compiler warns if the match is not exhaustive.
+
+Use Cases:
+
+Traits: Use normal traits when you want to share behavior across classes without restricting where those classes can be defined.
+Sealed Traits: Use sealed traits when you have a finite and known set of subclasses that should be tightly controlled within a single file. This ensures that all possible subtypes are explicitly handled.
+
+Example: 
+Scenario: Modeling Animals with Traits Imagine we want to model different animals—specifically, animals that have tails. We’ll create a trait called TailWagger to represent this common behavior.
+Scala
+
+// Define the TailWagger trait
+trait TailWagger {
+    def startTail(): Unit
+    def stopTail(): Unit
+}
+
+// Create a class for a specific animal (e.g., Dog)
+class Dog(val name: String) extends TailWagger {
+    override def startTail(): Unit =
+        println(s"$name's tail is wagging happily!")
+
+    override def stopTail(): Unit =
+        println(s"$name's tail stopped wagging.")
+}
+
+// Usage
+val myDog = new Dog("Buddy")
+myDog.startTail() // Output: Buddy's tail is wagging happily!
+myDog.stopTail()  // Output: Buddy's tail stopped wagging.
+
+The TailWagger trait defines two abstract methods: startTail() and stopTail().
+The Dog class extends the TailWagger trait and provides concrete implementations for these methods.
+When we create an instance of Dog (e.g., myDog), we can call its tail-related methods.
+
+
 3.	What is an abstract class? 
+
+Short Answer :
+
+an abstract class is a blueprint for other classes. It cannot be directly instantiated and serves as a base class. Abstract classes can contain both abstract (undefined) methods and non-abstract (defined) methods. Unlike traits, which allow multiple inheritance, a class can extend only one abstract class1. They are particularly useful when you need constructor arguments or when calling Scala code from Java
+
+Long Answer:
+
+	Definition:
+An abstract class is a class that cannot be instantiated directly. It serves as a blueprint for other classes.
+Abstract classes can contain both abstract (undefined) methods and non-abstract (defined) methods.
+Unlike regular classes, you cannot create instances of an abstract class using the new keyword.
+	Purpose and Usage:
+Abstract classes are designed to provide common functionality and define a contract that derived (subclasses) classes must fulfill.
+They allow you to create a base class with shared behavior that can be inherited by multiple subclasses.
+Abstract classes are particularly useful when you want to enforce certain methods to be implemented by subclasses.
+
+	Syntax:
+	abstract class Pet(name: String) {
+    def speak(): Unit
+    // Other non-abstract methods can also be defined here
+}
+	
+	Inheritance and Implementation:
+Subclasses (concrete classes) extend abstract classes and provide implementations for the abstract methods.
+Abstract methods are declared without a body (no implementation) in the abstract class.
+Subclasses must override these abstract methods and provide their own implementations.
+
+	Limitations:
+A class can extend only one abstract class (unlike traits, which allow multiple inheritance).
+Abstract classes are more restrictive than traits but can be useful in specific scenarios.
+
 4.	What is the difference between  java interface and a scala trait?
+
+Short Answer : 
+
+	Java Interfaces: Simple contracts with method signatures.
+	Scala Traits: Super-powered contracts with method signatures and optional implementations. They’re great for modular code design.
+
+Long Answer: 
+	
+	Java Interfaces:
+
+	What Are They?: Imagine you have a contract—a set of rules—that different classes must follow. Java interfaces are like such contracts.
+	What They Contain?: Interfaces define method signatures (like a blueprint) that classes implementing them must provide.
+
+	Example:
+
+// Java interface
+interface Animal {
+    void makeSound();
+}
+
+// Class implementing the interface
+class Dog implements Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Woof!");
+    }
+}
+
+Scala Traits:
+
+ Traits as super-powered interfaces. They not only define method signatures but can also provide method implementations.
+What They Can Do?: Traits allow you to mix in behavior to classes. They’re like Lego pieces you can attach to your classes.
+
+	Example:
+	
+	// Scala trait
+trait Pet {
+    def speak(): Unit
+}
+
+// Class mixing in the trait
+class Dog(val name: String) extends Pet {
+    override def speak(): Unit = println(s"$name says Woof!")
+}
+
+
 5.	What is a singleton 
+
+Short Answer: A singleton is like a special character—unique, always there, and ready to help.
+
+Long Answer : 
+
+Singleton: Imagine you have a special object that exists only once in your entire program. It’s like having a unique superhero—there’s only one of them. That’s what we call a singleton.
+Why Singleton?: We use singletons when we want a single instance of something to be shared across our code.
+Example:
+Suppose we’re building a logging system. We want only one logger to handle all messages.
+We create a singleton object called Logger.
+Whenever we need to log something, we use this one and only Logger.
+
+// Singleton object
+object Logger {
+    def log(message: String): Unit = {
+        println(s"LOG: $message")
+    }
+}
+
+// Usage
+Logger.log("Hello, world!") // Prints: LOG: Hello, world!
+
+
 6.	What is a higher order function?
+
+	Short Answer : Higher-order functions are like function managers—they handle other functions for us!
+	
+	Long Answer : 
+
+	 Imagine you have a function that either takes other functions as arguments or returns a function as its result. It’s like a function that deals with other functions—it’s a higher-order function!
+Why Higher-Order?: We use them to build flexible and reusable code.
+
+Example:
+Suppose we want to double a number and print the result.
+We create a higher-order function called doubleAndPrint.
+It takes an integer (a) and another function (f) that transforms the integer (like doubling it).
+The result is printed out.
+
+// Higher-order function
+def doubleAndPrint(a: Int, f: Int => Int): Unit = {
+    val result = f(a)
+    println(s"The value is now $result")
+}
+
+// Usage
+doubleAndPrint(5, a => a * 2) // Prints: "The value is now 10"
+
+
 7.	What is a closure function
+
+Short Answer : Closures are like memory wizards—they hold onto things you thought were forgotten!
+
+Long Answer: 
+
+	Imagine you have a magical function that remembers things from its surroundings—even after those things are gone. That’s a closure!
+How It Works?: A closure is a function that “closes over” variables from its outer scope. It keeps those variables alive, even when they’re out of sight.
+Example:
+Suppose we want a function that adds a fixed number to any given value.
+We create a closure called addN that captures the fixed number.
+The closure remembers that number, no matter where it’s used.
+
+	// Closure example
+def addN(fixedNumber: Int): Int => Int = {
+    (value: Int) => value + fixedNumber
+}
+
+// Usage
+val addFive = addN(5)
+println(addFive(10)) // Prints: 15 (10 + 5)
+
+
 8.	What is a companion object? What are the advantages ? example
+
+	Short Answer : Companion objects are like loyal sidekicks—they make your class shine! 
+
+	Long Answer :  For example i  have a best friend who’s always there for me, knows your secrets, and complements your strengths. That’s what a companion object is for a Scala class!
+
+What It Does?: A companion object is like a sidekick to a class. It lives in the same file and shares secrets with the class.
+Advantages:
+Access to Private Members: A companion object can access private members (fields and methods) of its class.
+Factory Methods: It provides a place for factory methods (like creating instances without the new keyword).
+Shared Code: You can put shared code in a companion object.
+  
+	class Person(val name: String)
+
+object Person {
+    def create(name: String): Person = new Person(name)
+}
+
+val p = Person.create("Alice")
+println(s"Hello, ${p.name}!")
+
+
 9.	Nil vs Null vs null vs Nothing vs None vs Unit 
+
+	Short Answer :
+	
+	Nil:
+	Represents an empty list (like having no groceries in your shopping cart).
+	Used to initialize empty lists in Scala.
+	Null:
+	Represents an absent value (like the “void” of Scala).
+	Avoid using it; prefer Option types instead.
+	Nothing:
+	A type with no instances (like an empty universe).
+	Often used for functions that never return (e.g., throwing exceptions).
+	None:
+	Represents an empty option (like an empty box).
+	Subtype of Option for handling absence of a value.
+	Unit:
+	Equivalent to Java’s void.
+	Used for functions that don’t return anything.
+
+Long Answer:
+	Nil:
+	What Is It?: Imagine an empty list—like having no groceries in your shopping cart. That’s what Nil represents in Scala.
+	Usage: It’s an empty singleton object list that extends the List type. Use it to initialize empty lists.
+	Example val myList = Nil
+	println(s"A list is initialized with length ${myList.length}")
+	
+	Example:
+	val nullRefCar: Car = null
+println(nullRefCar.make) // Causes NullPointerException
+
+	Null:
+	
+	What Is It?: Think of it as the “absence of an object.” It’s used to represent missing values.
+Usage: Avoid it! Instead, use Option types to handle possible empty values.
+
+	Example:
+	val nullRefCar: Car = null
+println(nullRefCar.make) // Causes NullPointerException
+
+	Nothing:
+	
+	What Is It?: Imagine a type with no instances—it’s like an empty universe.
+	Usage: It’s often used for functions that never return (e.g., throwing exceptions).
+
+Example: def neverReturns: Nothing = throw new Exception("Oops!")
+
+	
+
+	None:
+	What Is It?: Picture an empty box—it’s like saying, “There’s nothing inside.”
+	Usage: It’s a subtype of Option. Use it to represent absence of a value.
+
+	Example: val maybeName: Option[String] = None
+
+	Unit:
+	What Is It?: Think of it as the “void” of Scala—it’s used for functions that don’t return anything.
+	Usage: When a function has no meaningful result.
+	
+	Example:
+	def greet(name: String): Unit = println(s"Hello, $name!")
+
+
+	
+
+
+
 10.	What is pure function?
-11.	What is SBT and how have you used it? 
+
+	Short Answer: 
+	Pure functions are like trustworthy recipes—no secret ingredients, just reliable cooking!
+
+	Long Answer: 
+
+	Pure Function: for example we are cooking a recipe that always gives the same result when you follow it. That’s what a pure function is in programming!
+
+What It Does?: A pure function is like a reliable recipe. It:
+Takes some ingredients (input).
+
+Follows a specific set of steps (algorithm).
+Always produces the same dish (output).
+
+Advantages:
+
+Predictable: Pure functions are consistent—you know what to expect.
+No Surprises: They don’t mess with hidden stuff outside the recipe.
+Easy Testing: You can test them easily because they’re so predictable.
+
+Example:
+
+// Pure function: Doubles a number
+def doubleIt(number: Int): Int = {
+    number * 2
+}
+
+val result = doubleIt(5) // Always 10
+
+
+
+11.	What is SBT and how have you used it?
+
+	Short Answer:
+	
+	SBT (Scala Build Tool) is a powerful and widely used build tool in the Scala ecosystem. It’s specifically designed for managing Scala projects, handling dependencies, compiling code, and running tests.
+
+	Long Answer: 
+
+	Definition: SBT is a build tool that automates various tasks related to building, testing, and packaging Scala projects.
+	
+Features:
+	Native Scala Support: SBT understands Scala projects deeply.
+	Dependency Management: It handles library dependencies seamlessly.
+	Incremental Compilation: Only recompiles what’s necessary for faster development.
+	Flexible Configuration: SBT uses a rich DSL (Domain-Specific Language) for project configuration.
+	Extensible: You can add custom plugins to enhance your project.
+
+How Have I Used SBT?
+Creating Projects: I’ve seen developers use SBT to set up new Scala projects quickly.
+Managing Dependencies: SBT resolves and manages library dependencies (like adding external libraries to your project).
+Compiling Code: Developers use SBT to compile Scala code into bytecode.
+Running Tests: SBT runs test suites to ensure code quality.
+Packaging JARs: It packages your Scala code into JAR files for distribution.
+
+Example:
+Imagine you’re starting a new Scala project. You’d create an SBT project, define dependencies in the build.sbt file, and run sbt compile or sbt test to build and test your code.
+
+ 
 12.	What is currying?
 13.	Difference between currying and higher-order functions
 14.	Difference between var and val?
