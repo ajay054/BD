@@ -1,0 +1,189 @@
+SQL 
+1.	Types of commands and their examples.
+
+	DDL (Data Definition Language): Used for defining and managing database structures.
+Example: CREATE TABLE, ALTER TABLE, DROP TABLE
+	DML (Data Manipulation Language): Used for manipulating data within tables.
+Example: SELECT, INSERT, UPDATE, DELETE
+	DCL (Data Control Language): Manages access and permissions.
+Example: GRANT, REVOKE
+
+
+2.	What is Normalization and denormalization?
+
+	Normalization: Process of organizing data to minimize redundancy and dependency issues.
+	Denormalization: Intentionally introducing redundancy for performance optimization.
+Example: Suppose you denormalize by storing redundant data (e.g., total order amount) in an order table to avoid costly joins during reporting.
+  
+3.	Explain 1NF, 2NF, 3NF.
+
+	1NF (First Normal Form): Eliminates repeating groups and ensures atomic values.
+	2NF (Second Normal Form): Eliminates partial dependencies by splitting tables.
+	3NF (Third Normal Form): Removes transitive dependencies.
+Example: Achieving 3NF by breaking down a customer table into separate customer and address tables.
+
+4.	Share use case where you had to do denormalization in database..
+
+	Consider an e-commerce system where you denormalize product details into the order table to speed up order processing.
+
+5.	What is primary key and foreign key?
+
+	Primary Key: Uniquely identifies a record in a table.
+	Foreign Key: Links to a primary key in another table.
+Example: Customer ID as a primary key in the customer table and a foreign key in the order table.
+
+6.	what is alternate and candidate key?
+
+	Alternate Key: A candidate key that is not chosen as the primary key.
+	Candidate Key: A unique key that can be used as a primary key.
+Example: Social Security Number (SSN) could be an alternate key for a person.
+
+7.	What are window functions?
+	
+	Perform calculations across a set of rows related to the current row.
+Example: ROW_NUMBER(), SUM(), LEAD(), LAG()
+	
+8.	Explain Ranking Functions? GIven a small table , write the output.
+
+	Assign ranks to rows based on specified criteria.
+Example: RANK(), DENSE_RANK(), NTILE(
+
+9.	Types of Joins? With example and usecase. All the number of records return and exact records.
+
+	Inner Join, Left Join, Right Join, Full Outer Join.
+Example: Inner Join retrieves records common to both tables.
+
+10.	Use case when self join is required.
+
+	When you need to relate rows within the same table (e.g., hierarchical data like an employee reporting structure).
+
+11.	What is subquery?
+
+	A query nested within another query.
+Example: Using a subquery to find employees with salaries greater than the average salary.
+
+12.	What is corelated subquery?
+
+	A subquery that refers to columns from the outer query.
+Example: Finding employees whose salary exceeds the average salary in their department.
+
+13.	What is CTE? 
+
+	CTE (Common Table Expression):
+	Temporary result set defined within a query.
+Example: Recursive CTE to traverse hierarchical data.
+
+14.	What is derived table?
+
+	A subquery used as a table in the main query.
+Example: Using a derived table to filter results.
+
+	
+15.	Find third highest employee based on salary?
+
+	SELECT TOP 1 Salary FROM Employees ORDER BY Salary DESC OFFSET 2 ROWS FETCH NEXT 1 ROW ONLY
+
+16.	Find third highest employee based on salary  per department?
+
+More complex query involving a window function.
+
+
+17.	How to find duplicate values in a single column?
+
+SELECT Column, COUNT(*) FROM Table GROUP BY Column HAVING COUNT(*) > 1
+
+18.	How to find duplicate values in a multiple column?
+
+Similar approach, but include all relevant columns.
+
+19.	What are ACID properties?
+
+Atomicity, Consistency, Isolation, Durability—ensuring reliable transactions.
+
+20.	Diff between union and union all
+
+UNION removes duplicates; UNION ALL retains them.
+
+
+21.	Diff between primary key and unique key
+
+Both enforce uniqueness, but a table can have only one primary key
+
+22.	Diff between truncate and delete
+
+TRUNCATE removes all rows (faster); DELETE removes specific rows.
+
+23.	Diff between having and where
+
+HAVING filters aggregated results; WHERE filters individual rows.
+
+
+24.	SQL query execution order.
+
+When you execute an SQL query, the database engine follows a specific order of operations:
+
+FROM: Identifies the tables involved.
+JOIN: Combines data from multiple tables.
+WHERE: Filters rows based on specified conditions.
+GROUP BY: Groups rows for aggregation.
+HAVING: Filters aggregated results.
+SELECT: Specifies columns to retrieve.
+DISTINCT: Removes duplicate rows.
+ORDER BY: Sorts the result set.
+LIMIT/OFFSET: Limits the number of rows returned
+
+25.	What are indexes? Types of Indexes and their differences.
+
+	What are Indexes?
+		Indexes improve query performance by allowing faster data retrieval.
+		They’re like a book’s index—helping you find specific pages quickly.
+		Implemented as B-trees or hash tables.
+	Types of Indexes:
+	Primary Index:
+		Created automatically for the primary key column.
+		Determines the physical order of data in the table.
+	Unique Index:
+		Enforces uniqueness on a column (similar to a primary key).
+		Allows NULL values (unlike primary keys).
+	Clustered Index:
+		Determines the physical order of rows in a table.
+		Usually based on the primary key.
+	Non-Clustered Index:
+		Creates a separate structure for faster data retrieval.
+		Does not affect the physical order of rows.
+	Composite Index (Multi-Column Index):
+		Combines multiple columns into a single index.
+		Useful for queries involving those columns together.
+	Covering Index:
+		Includes all columns needed for a query.
+		Reduces the need to access the actual table data.
+	Bitmap Index:
+		Efficient for low-cardinality columns (few distinct values).
+		Uses bitmaps to represent data presence.
+	Function-Based Index:
+		Indexes based on expressions or functions (e.g., substring).
+		Useful for computed columns.
+	Spatial Index:
+		Optimizes spatial data (geographic or geometric).
+		Supports spatial queries (e.g., finding nearby locations).
+26.	What is surrogate key? Give example where you used it and how.
+
+	A surrogate key is an artificial, system-generated identifier for a record.
+Example: In an employee table, an auto-incremented employee ID (not related to any real-world attribute) serves as a surrogate key.
+	
+	Benefits:
+	Simplifies joins (no need to use natural keys).
+	Ensures uniqueness.
+	Stable even if other attributes change.
+
+27.	Ways to optimize sql query?
+
+	Use Indexes: Properly index columns used in WHERE clauses and JOIN conditions.
+	**Avoid SELECT ***: Retrieve only necessary columns.
+	Limit Rows: Use LIMIT or TOP to restrict the result set.
+	Avoid Subqueries: Opt for JOINs or CTEs where possible.
+	Analyze Execution Plans: Understand query performance using EXPLAIN or equivalent.
+	Normalize Data: Properly designed schemas improve efficiency.
+	Caching: Cache frequently accessed data.
+	Avoid Cursors: Set-based operations are more efficient.
+	Parameterize Queries: Prevent SQL injection and improve execution plan reuse.
