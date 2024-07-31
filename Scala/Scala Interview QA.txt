@@ -407,9 +407,87 @@ Imagine you’re starting a new Scala project. You’d create an SBT project, de
 
  
 12.	What is currying?
+
+	Short Answer :
+
+	 currying! It’s like the seasoning you sprinkle over your programming recipes to make them more flavorful. 🌶️ Okay, maybe not exactly, but it does add a certain elegance to functional programming.
+
+Scala natively supports currying. You can define functions in a curried form or convert regular functions to curried ones using the curried method.
+
+val curriedMultiply: Int => Int => Int = (a: Int) => (b: Int) => a * b
+val multiplyByThree: Int => Int = curriedMultiply(3)
+val result = multiplyByThree(7)  // Result: 21
+
+
+
+
+	Long Answer :
+
+Currying is a technique used in functional programming languages (and even some non-functional ones) where you break down a function that takes multiple arguments into a series of functions that each take a single argument. It’s like disassembling a multi-layered sandwich into its individual ingredients—you get more control over how you put things together.
+
+	Single-Argument Functions: Imagine you have a function that takes two arguments, like this:
+
+	def add(a: Int, b: Int): Int = a + b
+
+	Now, currying would transform this into a series of single-argument functions:
+
+	def curriedAdd(a: Int)(b: Int): Int = a + b
+
+	
+	Partial Application: With currying, you can partially apply a function by fixing some of its arguments. 
+
+	For example: val addFive: Int => Int = curriedAdd(5)
+			val result = addFive(3)  // Result: 8
+
+Why Currying?
+
+Flexibility: It allows you to create specialized versions of a function by partially applying arguments.
+Composition: Curried functions play nicely with function composition. You can chain them together like a beautiful necklace of function calls.
+Readability: Sometimes it’s easier to reason about a series of single-argument functions than a big multi-argument one.
+
+
+	
+
+	 
 13.	Difference between currying and higher-order functions
+
+	Currying and higher-order functions are like the dynamic duo of the functional world—each with its own superpower.
+	
+Currying:
+	Superpower: Precision in argument delivery! 🎯
+What It Does: Currying splits a multi-argument function into a sequence of single-argument functions. Imagine it as a function disassembler—taking apart a complex machine and handing you its individual gears
+	
+	Why It Matters:
+Flexibility: Partially apply arguments to create specialized versions of a function.
+Composition: Curried functions play well with function composition.
+Readability: Sometimes it’s easier to follow a series of single-argument functions.
+
+val numbers = List(1, 2, 3, 4)
+val doubled = numbers.map(_ * 2)  // Result: List(2, 4, 6, 8)
+
+
+Higher-Order Functions:
+Superpower: Elevating functions to VIP status! 🌟
+What They Are: Higher-order functions (HOFs) treat functions as first-class citizens. You can pass them as arguments, return them from other functions, and store them in variables.
+Examples:
+map, filter, and reduce in Scala are HOFs. They take functions as arguments:
+
+def multiplyBy(factor: Int): Int => Int = (x: Int) => x * factor
+val multiplyByThree: Int => Int = multiplyBy(3)
+val result = multiplyByThree(7)  // Result: 21
+
+
+
+	
 14.	Difference between var and val?
+
+val: Think of it as a “value.” When you declare something with val, its value cannot change once assigned. It’s like writing your name in permanent ink—it stays put.
+var: This one’s more flexible. It stands for “variable.” You can change its value anytime. It’s like having a whiteboard—you can erase and rewrite as needed.
+So, val is steady, and var is a bit more adventurous!
+
 15.	What is case class?
+
+
 16.	Why/when to use case class? Example
 17.	Difference between case class and normal class?
 18.	Scala type hierarchy?
