@@ -488,8 +488,122 @@ So, val is steady, and var is a bit more adventurous!
 15.	What is case class?
 
 
+
+A case class in Scala is a special type of class optimized for modeling immutable data. It automatically provides several useful features:
+
+Constructor parameters are automatically exported as publicly accessible properties (public vals).
+Instances of case classes are compared by structure (values) rather than reference.
+They come with a built-in copy method for creating shallow copies.
+Case classes are commonly used for modeling structured data, such as representing records or entities in an application."
+
+
+		
+
 16.	Why/when to use case class? Example
+
+Why Use Case Classes?
+Immutable Data: Case classes are great for creating immutable data structures. If you want objects that don’t change after creation, use case classes.
+Pattern Matching: They work well with pattern matching, making your code more readable.
+Structural Equality: Case classes provide proper equals and hashCode methods.
+Boilerplate Reduction: They automatically generate getters for constructor parameters.
+
+Example:
+
+case class Person(name: String, age: Int)
+
+val alice = Person("Alice", 30)
+val bob = Person("Bob", 25)
+
+println(alice.name) // Accessing property
+println(alice == bob) // Structural equality
+
 17.	Difference between case class and normal class?
+
+
+Case Classes:
+Purpose: Designed for modeling immutable data.
+Features:
+Automatically export constructor parameters as publicly accessible properties (public vals).
+Implicitly define equals and hashCode methods for structural equality.
+Ideal for pattern matching and algebraic data types.
+
+Example:
+
+case class Person(name: String, age: Int)
+val alice = Person("Alice", 30)
+
+Regular Classes:
+Purpose: Used for more complex behavior, including stateful computations.
+Features:
+No predefined methods; you define everything explicitly.
+Supports inheritance and mutability.
+
+class Employee(name: String, salary: Double) {
+  // Custom methods and behavior
+}
+
+
+
+
 18.	Scala type hierarchy?
+
+every value has a type, and these types form a type hierarchy. 
+
+Any: The top type, supertype of all other types.
+AnyVal: Represents value types (e.g., Int, Double).
+AnyRef: Represents reference types (like java.lang.Object).
+Nothing: Used for signaling non-termination.
+Null: Rarely used (prefer alternatives to null).
+
 19.	What are partially applied functions?
+
+Partially applied functions in Scala allow developers to apply a function without passing all the arguments defined by that function. Instead, you provide only some of the arguments, leaving the remaining parameters to be supplied later.
+
+Usage:
+When invoking a function, you can pass fewer arguments than expected.
+The function becomes partially applied, waiting for the remaining arguments.
+Placeholder:
+Use an underscore (_) as a placeholder for the missing arguments.
+The underscore indicates that those arguments will be provided later.
+Benefits:
+Minimizes complex functions with many arguments.
+Convenient for binding some parameters and deferring others.
+
+Examples:
+Suppose we have a function Book(discount: Double, costprice: Double).
+We can partially apply it by passing the discount and leaving the cost price empty:
+
+val discountedPrice = Book(25, _: Double)
+println(discountedPrice(400)) // Output: 300.0
+
+You can even partially apply a function without specifying any arguments:
+
+val r = Mul _
+println(r(9, 8)) // Output: 72.0
+
 20.	What is tail recursion.
+
+Tail recursion in Scala is a powerful technique for optimizing recursive functions. 
+
+Definition:
+
+A function is tail-recursive if the recursive call is the last operation performed in the function body.
+Unlike traditional recursion, tail recursion allows the Scala compiler to convert the recursion into an iterative loop.
+This optimization reduces the risk of stack overflow errors and improves performance.
+
+Benefits:
+
+Avoids excessive call stack depth.
+Enables efficient memory usage.
+Makes recursive functions more practical for large inputs.
+
+Example:
+
+@tailrec
+def tailRecursiveLength(list: List[String], accumulator: Long): Long =
+  list match {
+    case Nil => accumulator
+    case head :: tail => tailRecursiveLength(tail, accumulator + 1)
+  }
+
+The @tailrec annotation ensures proper tail recursion
