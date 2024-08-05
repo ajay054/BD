@@ -1,0 +1,7 @@
+MERGE INTO customer_backup AS target
+USING customer AS source
+ON target.cid = source.cid
+WHEN MATCHED THEN
+    UPDATE SET target.name = source.name, target.email = source.email
+WHEN NOT MATCHED THEN
+    INSERT (cid, name, email) VALUES (source.cid, source.name, source.email);

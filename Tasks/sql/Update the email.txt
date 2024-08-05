@@ -1,0 +1,1 @@
+UPDATE customer SET email = 'newemail@example.com' WHERE cid = 1;

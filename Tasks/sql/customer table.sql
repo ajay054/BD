@@ -1,0 +1,6 @@
+CREATE TABLE customer (
+    cid INT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255),
+    lastChange TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
