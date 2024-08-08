@@ -1,0 +1,23 @@
+postgresql - Table - ajayemp
+
+
+Import to Hadoop:
+
+sqoop import --connect jdbc:postgresql://ec2-18-132-73-146.eu-west-2.compute.amazonaws.com:5432/testdb --username consultants -password WelcomeItc@2022 --table emp --m 1 --target-dir /user/ec2-user/UKUSJULHDFS/ajay/emp_incremental_append --incremental append --check-column id --last-value 1
+
+
+Import only new inserted data based on timestamp.
+
+
+sqoop import --connect jdbc:postgresql://ec2-18-132-73-146.eu-west-2.compute.amazonaws.com:5432/testdb --username consultants -password WelcomeItc@2022 --table ajayemp --m 1 --target-dir /user/ec2-user/UKUSJULHDFS/ajay/ajayemp_incremental_append --incremental append --check-column id --last-value 1
+
+
+merge:
+
+sqoop import --connect jdbc:postgresql://ec2-18-132-73-146.eu-west-2.compute.amazonaws.com:5432/testdb --username consultants -password WelcomeItc@2022 --table ajayemp --m 1 --target-dir /user/ec2-user/UKUSJULHDFS/ajay/ajayemp_incremental_lastmodified --incremental lastmodified --merge-key id --check-column last_modified --last-value 1
+
+
+Creating  Sqoop Job for Regular Incremental Import:
+
+sqoop job --create -- ajayempupdatejob  --connect jdbc:postgresql://ec2-18-132-73-146.eu-west-2.compute.amazonaws.com:5432/testdb --username consultants -password WelcomeItc@2022 --table ajayemp --m 1 --target-dir /user/ec2-user/UKUSJULHDFS/ajay/ajayemp_incremental_lastmodified--merge-key id --check-column last_modified --last-value '4
+
