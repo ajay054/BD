@@ -34,7 +34,7 @@ BEGIN
 END $$;
 """)
 
-# Incremental load: Synchronize customer_backup with customer
+#Synchronize customer_backup with customer
 merge_query = """
 INSERT INTO customer_backup (cid, name, email, lastChange)
 SELECT cid, name, email, lastChange FROM customer
